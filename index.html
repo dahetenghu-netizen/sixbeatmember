@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIX BEAT — メンバー紹介</title>
+<title>SIX BEAT — 早稲田大学フィンスイミングチーム</title>
 <style>
   :root {
     --maroon:    #7B0C2A;
@@ -25,42 +25,57 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif; background: var(--bg); color: var(--text-1); line-height: 1.7; }
-  header { background: var(--maroon-d); color: var(--white); padding: 4rem 2rem 3rem; text-align: center; position: relative; overflow: hidden; }
+
+  /* ===== HEADER ===== */
+  header { background: var(--maroon-d); color: var(--white); padding: 3rem 2rem 2rem; text-align: center; position: relative; overflow: hidden; }
   header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-60deg, transparent 0px, transparent 28px, rgba(200,160,74,0.06) 28px, rgba(200,160,74,0.06) 29px); pointer-events: none; }
   header::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gold); }
   .header-inner { position: relative; }
   .header-team { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 0.5rem; }
-  header h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; color: var(--white); }
+  header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; color: var(--white); }
   header h1 span { color: var(--gold); }
-  .header-sub { margin-top: 0.75rem; font-size: 0.9rem; color: rgba(255,255,255,0.6); letter-spacing: 0.05em; }
-  .header-rule { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 1.5rem; }
-  .header-rule span { display:block; height:1px; width:48px; background:var(--gold); opacity:0.5; }
-  .filter-bar { background: var(--maroon); padding: 0.6rem 1.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; position: sticky; top: 0; z-index: 20; border-bottom: 1px solid var(--maroon-d); }
-  .filter-btn { border: 1px solid rgba(255,255,255,0.3); background: transparent; color: rgba(255,255,255,0.75); padding: 0.28rem 0.85rem; border-radius: 20px; font-size: 0.78rem; cursor: pointer; transition: all 0.15s; font-family: inherit; letter-spacing: 0.03em; }
-  .filter-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(200,160,74,0.1); }
-  .filter-btn.active { background: var(--gold); border-color: var(--gold); color: var(--maroon-d); font-weight: 700; }
+  .header-sub { margin-top: 0.5rem; font-size: 0.88rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
+
+  /* ===== GLOBAL NAV ===== */
+  .global-nav { background: var(--maroon); display: flex; justify-content: center; gap: 0; border-bottom: 1px solid var(--maroon-d); position: sticky; top: 0; z-index: 30; }
+  .nav-btn { background: transparent; border: none; color: rgba(255,255,255,0.65); padding: 0.8rem 1.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.04em; border-bottom: 3px solid transparent; transition: all 0.15s; }
+  .nav-btn:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+  .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ===== PAGE SECTIONS ===== */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ===== FILTER BAR (members) ===== */
+  .filter-bar { background: var(--bg2); padding: 0.55rem 1.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; border-bottom: 1px solid var(--border); }
+  .filter-btn { border: 1px solid var(--border); background: var(--white); color: var(--text-2); padding: 0.25rem 0.8rem; border-radius: 20px; font-size: 0.76rem; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+  .filter-btn:hover { border-color: var(--maroon); color: var(--maroon); }
+  .filter-btn.active { background: var(--maroon); border-color: var(--maroon); color: var(--white); font-weight: 700; }
+
+  /* ===== GRID ===== */
   .grid-section { max-width: 1100px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
   .section-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-3); margin-bottom: 1.4rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
   .section-label::before { content: ''; display: block; width: 14px; height: 2px; background: var(--maroon); border-radius: 1px; }
-  .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.1rem; }
+  .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.1rem; }
+
+  /* ===== MEMBER CARD ===== */
   .member-card { background: var(--white); border-radius: var(--r-card); border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
   .member-card:hover { transform: translateY(-4px); box-shadow: 0 10px 28px rgba(75,0,24,0.12); border-color: rgba(123,12,42,0.3); }
-  .member-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
   .card-stripe { height: 3px; background: var(--maroon); }
   .card-top { padding: 1.25rem 1.4rem 0.9rem; display: flex; gap: 1rem; align-items: flex-start; }
   .avatar-wrap { flex-shrink: 0; width: 70px; height: 70px; border-radius: 50%; overflow: hidden; border: 2.5px solid var(--maroon-xl); background: var(--maroon-xl); }
   .avatar-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .avatar-initials { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: var(--maroon); background: var(--maroon-xl); letter-spacing: -0.02em; }
+  .avatar-initials { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; font-weight: 800; color: var(--maroon); background: var(--maroon-xl); }
   .card-info { flex: 1; min-width: 0; }
   .badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.4rem; }
   .badge { font-size: 9.5px; font-weight: 700; padding: 2px 7px; border-radius: var(--r-tag); letter-spacing: 0.04em; white-space: nowrap; }
-  .badge-rep    { background: var(--maroon); color: var(--white); }
-  .badge-coach  { background: var(--maroon-d); color: var(--gold-l); }
-  .badge-jr     { background: var(--maroon-xl); color: var(--maroon); border: 1px solid rgba(123,12,42,0.25); }
-  .badge-record { background: var(--gold); color: var(--maroon-d); }
-  .badge-masters{ background: #3D2010; color: #F0DFA5; }
-  .card-name { font-size: 1.1rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.01em; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .card-role { font-size: 0.75rem; color: var(--maroon); font-weight: 600; margin-top: 2px; letter-spacing: 0.03em; }
+  .badge-rep     { background: var(--maroon); color: var(--white); }
+  .badge-coach   { background: var(--maroon-d); color: var(--gold-l); }
+  .badge-jr      { background: var(--maroon-xl); color: var(--maroon); border: 1px solid rgba(123,12,42,0.25); }
+  .badge-record  { background: var(--gold); color: var(--maroon-d); }
+  .badge-masters { background: #3D2010; color: #F0DFA5; }
+  .card-name { font-size: 1.1rem; font-weight: 800; line-height: 1.25; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .card-role { font-size: 0.75rem; color: var(--maroon); font-weight: 600; margin-top: 2px; }
   .card-body { padding: 0 1.4rem 1rem; flex: 1; }
   .card-event { font-size: 0.76rem; color: var(--text-3); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 5px; }
   .card-event::before { content: ''; display: inline-block; width: 10px; height: 2px; background: var(--gold); border-radius: 1px; flex-shrink: 0; }
@@ -69,8 +84,10 @@
   .social-links { display: flex; gap: 6px; }
   .social-link { width: 26px; height: 26px; border-radius: 6px; background: var(--white); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; text-decoration: none; color: var(--text-3); font-size: 0.65rem; font-weight: 800; transition: all 0.12s; }
   .social-link:hover { background: var(--maroon); color: var(--white); border-color: var(--maroon); }
-  .profile-link { font-size: 0.75rem; color: var(--maroon); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 3px; letter-spacing: 0.02em; }
+  .profile-link { font-size: 0.75rem; color: var(--maroon); text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 3px; }
   .profile-link::after { content: '→'; }
+
+  /* ===== MODAL ===== */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(30,8,8,0.6); z-index: 100; align-items: center; justify-content: center; padding: 1rem; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--white); border-radius: 18px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; border: 1px solid var(--border); }
@@ -79,7 +96,7 @@
   .modal-avatar { width: 76px; height: 76px; border-radius: 50%; border: 3px solid rgba(200,160,74,0.4); overflow: hidden; flex-shrink: 0; background: var(--maroon-xl); }
   .modal-avatar img { width:100%;height:100%;object-fit:cover; }
   .modal-avatar .avatar-initials { font-size:1.4rem; }
-  .modal-name { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
+  .modal-name { font-size: 1.35rem; font-weight: 800; }
   .modal-role-label { font-size: 0.82rem; color: var(--gold-l); margin-top: 3px; opacity: 0.8; }
   .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.8); width: 30px; height: 30px; border-radius: 50%; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .modal-close:hover { background: rgba(255,255,255,0.25); }
@@ -93,19 +110,51 @@
   .modal-social { display:flex;gap:8px;margin-top:0.4rem; }
   .modal-social a { font-size: 0.78rem; font-weight: 700; color: var(--maroon); text-decoration: none; border: 1px solid var(--maroon); border-radius: 6px; padding: 4px 12px; transition: all 0.12s; }
   .modal-social a:hover { background: var(--maroon); color: var(--white); }
-  footer { background: var(--maroon-d); color: rgba(255,255,255,0.4); text-align: center; padding: 1.75rem 2rem; font-size: 0.75rem; letter-spacing: 0.05em; border-top: 3px solid var(--maroon); }
-  footer strong { color: var(--gold); font-weight: 700; }
+
+  /* ===== 団体概要ページ ===== */
+  .about-section { max-width: 800px; margin: 0 auto; padding: 3rem 1.5rem 5rem; }
+  .about-hero { background: var(--maroon-d); color: var(--white); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 2rem; position: relative; overflow: hidden; }
+  .about-hero::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-60deg, transparent 0, transparent 28px, rgba(200,160,74,0.05) 28px, rgba(200,160,74,0.05) 29px); }
+  .about-hero-inner { position: relative; }
+  .about-hero h2 { font-size: 1.6rem; font-weight: 800; color: var(--gold); margin-bottom: 0.5rem; }
+  .about-hero p { font-size: 0.92rem; color: rgba(255,255,255,0.75); line-height: 1.8; }
+  .about-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+  .about-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem 1.25rem 1rem; }
+  .about-card-label { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 5px; }
+  .about-card-label::before { content: ''; display: block; width: 10px; height: 2px; background: var(--gold); border-radius: 1px; }
+  .about-card-value { font-size: 0.95rem; font-weight: 700; color: var(--maroon); }
+  .about-card-desc { font-size: 0.82rem; color: var(--text-2); margin-top: 0.25rem; line-height: 1.6; }
+  .about-body { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 1.75rem 2rem; }
+  .about-body h3 { font-size: 1rem; font-weight: 800; color: var(--maroon); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+  .about-body p { font-size: 0.88rem; color: var(--text-2); line-height: 1.8; margin-bottom: 1.5rem; }
+  .about-body p:last-child { margin-bottom: 0; }
+
+  /* ===== ブログページ ===== */
+  .blog-section { max-width: 800px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .blog-grid { display: grid; gap: 1rem; }
+  .blog-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; align-items: stretch; transition: transform 0.15s, box-shadow 0.15s; text-decoration: none; color: inherit; }
+  .blog-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(75,0,24,0.1); border-color: rgba(123,12,42,0.25); }
+  .blog-card-accent { width: 5px; background: var(--maroon); flex-shrink: 0; }
+  .blog-card-body { padding: 1.1rem 1.25rem; flex: 1; }
+  .blog-card-date { font-size: 0.72rem; color: var(--text-3); margin-bottom: 0.3rem; letter-spacing: 0.05em; }
+  .blog-card-title { font-size: 0.98rem; font-weight: 700; color: var(--text-1); line-height: 1.4; margin-bottom: 0.35rem; }
+  .blog-card-desc { font-size: 0.82rem; color: var(--text-2); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .blog-card-arrow { display: flex; align-items: center; padding-right: 1.1rem; color: var(--maroon); font-size: 1rem; flex-shrink: 0; }
+
+  /* ===== LOADING / ERROR ===== */
   .loading-state { text-align: center; padding: 4rem 2rem; color: var(--text-3); }
   .loading-spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--maroon); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .error-state { text-align: center; padding: 3rem 2rem; color: var(--text-2); background: var(--white); border-radius: var(--r-card); border: 1px solid var(--border); }
-  .error-state p { font-size: 0.88rem; margin-top: 0.5rem; }
+
+  /* ===== FOOTER ===== */
+  footer { background: var(--maroon-d); color: rgba(255,255,255,0.4); text-align: center; padding: 1.75rem 2rem; font-size: 0.75rem; letter-spacing: 0.05em; border-top: 3px solid var(--maroon); }
+  footer strong { color: var(--gold); font-weight: 700; }
+
   @media (max-width: 600px) {
     .members-grid { grid-template-columns: 1fr; }
-    .card-top { padding: 1.1rem 1.25rem 0.75rem; }
-    .card-body { padding: 0 1.25rem 0.75rem; }
-    .card-footer { padding: 0.6rem 1.25rem; }
-    .modal-body { padding: 1.25rem 1.5rem 1.5rem; }
+    .about-cards { grid-template-columns: 1fr 1fr; }
+    .nav-btn { padding: 0.7rem 0.9rem; font-size: 0.78rem; }
   }
 </style>
 </head>
@@ -115,38 +164,93 @@
   <div class="header-inner">
     <div class="header-team">Waseda University Finswimming Team</div>
     <h1>SIX <span>BEAT</span></h1>
-    <p class="header-sub">早稲田大学フィンスイミングチーム — メンバー紹介</p>
-    <div class="header-rule"><span></span><span></span></div>
+    <p class="header-sub">早稲田大学フィンスイミングチーム</p>
   </div>
 </header>
 
-<nav class="filter-bar" aria-label="カテゴリフィルター">
-  <button class="filter-btn active" onclick="filterCards('all', this)">すべて</button>
-  <button class="filter-btn" onclick="filterCards('coach', this)">コーチ</button>
-  <button class="filter-btn" onclick="filterCards('rep', this)">日本代表</button>
-  <button class="filter-btn" onclick="filterCards('jr', this)">ジュニア</button>
-  <button class="filter-btn" onclick="filterCards('masters', this)">マスターズ</button>
-  <button class="filter-btn" onclick="filterCards('record', this)">記録保持者</button>
+<!-- グローバルナビ -->
+<nav class="global-nav">
+  <button class="nav-btn active" onclick="showPage('about', this)">団体概要</button>
+  <button class="nav-btn" onclick="showPage('members', this)">メンバー紹介</button>
+  <button class="nav-btn" onclick="showPage('blog', this)">ブログ</button>
 </nav>
 
-<main class="grid-section">
-  <div class="section-label">Members — <span id="count">0</span> 名</div>
-  <div class="members-grid" id="membersGrid">
-    <div class="loading-state">
-      <div class="loading-spinner"></div>
-      <div>メンバー情報を読み込み中...</div>
+<!-- ===== メンバーページ ===== -->
+<div class="page" id="page-members">
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterCards('all', this)">すべて</button>
+    <button class="filter-btn" onclick="filterCards('coach', this)">コーチ</button>
+    <button class="filter-btn" onclick="filterCards('rep', this)">日本代表</button>
+    <button class="filter-btn" onclick="filterCards('jr', this)">ジュニア</button>
+    <button class="filter-btn" onclick="filterCards('masters', this)">マスターズ</button>
+    <button class="filter-btn" onclick="filterCards('record', this)">記録保持者</button>
+  </div>
+  <main class="grid-section">
+    <div class="section-label">Members — <span id="count">0</span> 名</div>
+    <div class="members-grid" id="membersGrid">
+      <div class="loading-state"><div class="loading-spinner"></div><div>読み込み中...</div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== 団体概要ページ ===== -->
+<div class="page active" id="page-about">
+  <div class="about-section">
+    <div class="about-hero">
+      <div class="about-hero-inner">
+        <h2>SIX BEAT</h2>
+        <p>早稲田大学のフィンスイミングサークルです。フィンスイミングとはモノフィンやビーフィンを装着して泳ぐ競技で、水中を高速で移動する爽快感が魅力です。初心者から経験者まで、泳ぐことが好きな仲間を歓迎しています。</p>
+      </div>
+    </div>
+    <div class="about-cards">
+      <div class="about-card">
+        <div class="about-card-label">設立</div>
+        <div class="about-card-value">2003年</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-label">活動場所</div>
+        <div class="about-card-value">早稲田大学 記念会堂プール</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-label">活動日</div>
+        <div class="about-card-value">週3〜4回</div>
+        <div class="about-card-desc">平日夜・週末を中心に活動</div>
+      </div>
+      <div class="about-card">
+        <div class="about-card-label">競技種目</div>
+        <div class="about-card-value">サーフィス / ビーフィン / アプニア</div>
+      </div>
+    </div>
+    <div class="about-body">
+      <h3>活動内容</h3>
+      <p>定期練習では基礎技術から競技に向けたトレーニングまで幅広く行っています。国内の大会にも積極的に参加しており、日本代表選手も輩出しています。</p>
+      <h3>新歓・見学</h3>
+      <p>毎年4月に新歓活動を行っています。見学・体験は随時受け付けていますので、InstagramのDMまたは早稲田大学公認サークルの連絡先よりお気軽にご連絡ください。</p>
+      <h3>お問い合わせ</h3>
+      <p>Instagram: <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:var(--maroon);font-weight:700;">@sixbeat_waseda</a></p>
     </div>
   </div>
-</main>
+</div>
+
+<!-- ===== ブログページ ===== -->
+<div class="page" id="page-blog">
+  <div class="blog-section">
+    <div class="section-label">Blog — 活動記録・お知らせ</div>
+    <div class="blog-grid" id="blogGrid">
+      <div class="loading-state"><div class="loading-spinner"></div><div>読み込み中...</div></div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <strong>WASEDA UNIVERSITY FINSWIMMING TEAM SIX BEAT</strong><br>
   早稲田大学フィンスイミングチーム &nbsp;｜&nbsp; 設立 2003年
 </footer>
 
+<!-- モーダル -->
 <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
-  <div class="modal" id="modal">
-    <button class="modal-close" onclick="closeModal()" aria-label="閉じる">✕</button>
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-header">
       <div class="modal-avatar" id="modalAvatar"></div>
       <div>
@@ -160,10 +264,26 @@
 
 <script>
 // =============================================
-// スプレッドシートID（ここだけ変更すればOK）
+// スプレッドシートID（メンバー・ブログ共通）
+// メンバーシート：シート1（デフォルト）
+// ブログシート ：gid=（シート2のgidに変更してください）
 // =============================================
-const SHEET_ID = '2PACX-1vR9iC-j6mdI_aGP2eFuRpSVVZ69ejxYyrrmflcOGFCDSwtd_dHYN3K2e9oJEyQ6PD7Lnger2Lwl119t';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/e/${SHEET_ID}/pub?output=csv&cachebust=${Date.now()}`;
+const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9iC-j6mdI_aGP2eFuRpSVVZ69ejxYyrrmflcOGFCDSwtd_dHYN3K2e9oJEyQ6PD7Lnger2Lwl119t/pub';
+const MEMBERS_CSV_URL = `${SHEET_BASE}?output=csv&cachebust=${Date.now()}`;
+const BLOG_CSV_URL    = `${SHEET_BASE}?output=csv&gid=754192531&cachebust=${Date.now()}`;
+
+// 日本語列名 → 内部キーのマッピング
+const MEMBER_COLUMNS = {
+  '名前': 'name', '役職': 'role', '種目': 'event',
+  '自己紹介': 'bio', '経歴': 'career',
+  'タグ': 'tags', 'バッジ': 'badges',
+  'アイコン画像URL': 'photo',
+  'Instagram': 'instagram', 'X(Twitter)': 'twitter'
+};
+const BLOG_COLUMNS = {
+  'タイトル': 'title', '日付': 'date',
+  '説明': 'desc', 'URL': 'url'
+};
 
 const badgeConfig = {
   rep:    { label: '日本代表',     cls: 'badge-rep' },
@@ -175,101 +295,128 @@ const badgeConfig = {
 
 let members = [];
 let currentFilter = 'all';
+let blogLoaded = false;
 
-// CSVパーサー（ダブルクォート・カンマ対応）
-function parseCSV(text) {
-  const lines = text.replace(/\r/g, '').trim().split('\n');
-  if (lines.length < 2) return [];
-  const headers = parseLine(lines[0]);
-  return lines.slice(1).map(line => {
-    const cols = parseLine(line);
-    const obj = {};
-    headers.forEach((h, i) => { obj[h.trim()] = (cols[i] || '').trim(); });
-    obj.tags   = obj.tags   ? obj.tags.split(',').map(t => t.trim()).filter(Boolean) : [];
-    obj.badges = obj.badges ? obj.badges.split(',').map(t => t.trim()).filter(Boolean) : [];
-    obj.photo  = obj.photo  || null;
-    obj.instagram = obj.instagram || null;
-    obj.twitter   = obj.twitter   || null;
-    return obj;
-  }).filter(m => m.name && m.name.length > 0);
-}
-
+// ===== CSVパーサー =====
 function parseLine(line) {
-  const cols = [];
-  let cur = '', inQ = false;
+  const cols = []; let cur = '', inQ = false;
   for (let i = 0; i < line.length; i++) {
     if (line[i] === '"') {
       if (inQ && line[i+1] === '"') { cur += '"'; i++; }
-      else { inQ = !inQ; }
-    } else if (line[i] === ',' && !inQ) {
-      cols.push(cur); cur = '';
-    } else {
-      cur += line[i];
-    }
+      else inQ = !inQ;
+    } else if (line[i] === ',' && !inQ) { cols.push(cur); cur = ''; }
+    else cur += line[i];
   }
   cols.push(cur);
   return cols;
 }
 
+function parseCSV(text, colMap) {
+  const lines = text.replace(/\r/g, '').trim().split('\n');
+  if (lines.length < 2) return [];
+  const rawHeaders = parseLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const cols = parseLine(line);
+    const obj = {};
+    rawHeaders.forEach((h, i) => {
+      const key = colMap[h.trim()] || h.trim();
+      obj[key] = (cols[i] || '').trim();
+    });
+    return obj;
+  }).filter(o => Object.values(o).some(v => v.length > 0));
+}
+
+// ===== メンバー読み込み =====
 async function loadMembers() {
   try {
-    const res = await fetch(CSV_URL, { cache: 'no-store' });
+    const res = await fetch(MEMBERS_CSV_URL, { cache: 'no-store' });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    members = parseCSV(text);
-    if (members.length === 0) throw new Error('no data');
+    const raw = parseCSV(text, MEMBER_COLUMNS);
+    members = raw.map(m => ({
+      ...m,
+      tags:   m.tags   ? m.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+      badges: m.badges ? m.badges.split(',').map(t => t.trim()).filter(Boolean) : [],
+      photo:  m.photo  || null,
+      instagram: m.instagram || null,
+      twitter:   m.twitter   || null,
+    })).filter(m => m.name);
     renderCards(currentFilter);
   } catch (e) {
-    document.getElementById('membersGrid').innerHTML = `
-      <div class="error-state">
-        <strong>データの読み込みに失敗しました</strong>
-        <p>スプレッドシートの「ウェブに公開」設定を確認し、ページを再読み込みしてください。</p>
-        <p style="margin-top:0.5rem;font-size:0.8rem;color:var(--text-3);">エラー: ${e.message}</p>
-      </div>`;
+    document.getElementById('membersGrid').innerHTML =
+      `<div class="error-state"><strong>読み込みに失敗しました</strong><p>${e.message}</p></div>`;
   }
 }
 
-function initials(name) {
-  return name.trim().split(/\s+/).map(p => p[0]).join('').slice(0, 2).toUpperCase();
+// ===== ブログ読み込み =====
+async function loadBlog() {
+  if (blogLoaded) return;
+  blogLoaded = true;
+  try {
+    const res = await fetch(BLOG_CSV_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const posts = parseCSV(text, BLOG_COLUMNS).filter(p => p.title && p.url);
+    if (posts.length === 0) throw new Error('記事がありません');
+    document.getElementById('blogGrid').innerHTML = posts.map(p => `
+      <a class="blog-card" href="${p.url}" target="_blank" rel="noopener">
+        <div class="blog-card-accent"></div>
+        <div class="blog-card-body">
+          ${p.date ? `<div class="blog-card-date">${p.date}</div>` : ''}
+          <div class="blog-card-title">${p.title}</div>
+          ${p.desc ? `<div class="blog-card-desc">${p.desc}</div>` : ''}
+        </div>
+        <div class="blog-card-arrow">→</div>
+      </a>`).join('');
+  } catch (e) {
+    document.getElementById('blogGrid').innerHTML =
+      `<div class="error-state"><strong>ブログ記事を読み込めませんでした</strong><p>スプレッドシートにブログシートを追加し、GIDを設定してください。</p></div>`;
+  }
 }
+
+// ===== ナビゲーション =====
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'blog') loadBlog();
+}
+
+// ===== カード描画 =====
+function initials(name) { return name.trim().split(/\s+/).map(p => p[0]).join('').slice(0,2).toUpperCase(); }
 function avatarHTML(m) {
   return m.photo
-    ? `<img src="${m.photo}" alt="${m.name}" loading="lazy">`
+    ? `<img src="${m.photo}" alt="${m.name}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=\\'avatar-initials\\'>${initials(m.name)}</div>'">`
     : `<div class="avatar-initials">${initials(m.name)}</div>`;
 }
 function makeBadges(badges) {
-  return badges.map(b => {
-    const c = badgeConfig[b];
-    return c ? `<span class="badge ${c.cls}">${c.label}</span>` : '';
+  return (badges || []).map(b => {
+    const c = badgeConfig[b]; return c ? `<span class="badge ${c.cls}">${c.label}</span>` : '';
   }).join('');
 }
 
 function renderCards(filter) {
   currentFilter = filter;
-  const grid = document.getElementById('membersGrid');
   const list = filter === 'all' ? members : members.filter(m => m.tags.includes(filter));
   document.getElementById('count').textContent = list.length;
-
   if (list.length === 0) {
-    grid.innerHTML = `<div class="error-state"><strong>該当するメンバーがいません</strong></div>`;
+    document.getElementById('membersGrid').innerHTML = `<div class="error-state"><strong>該当メンバーなし</strong></div>`;
     return;
   }
-
-  grid.innerHTML = list.map(m => {
+  document.getElementById('membersGrid').innerHTML = list.map(m => {
     const idx = members.indexOf(m);
-    const badgesHTML = makeBadges(m.badges);
     const socials = [
-      m.instagram ? `<a class="social-link" href="${m.instagram}" target="_blank" rel="noopener" title="Instagram" onclick="event.stopPropagation()">IG</a>` : '',
-      m.twitter   ? `<a class="social-link" href="${m.twitter}"   target="_blank" rel="noopener" title="X"         onclick="event.stopPropagation()">𝕏</a>` : ''
+      m.instagram ? `<a class="social-link" href="${m.instagram}" target="_blank" rel="noopener" onclick="event.stopPropagation()">IG</a>` : '',
+      m.twitter   ? `<a class="social-link" href="${m.twitter}"   target="_blank" rel="noopener" onclick="event.stopPropagation()">𝕏</a>` : ''
     ].join('');
     return `
-    <article class="member-card" onclick="openModal(${idx})" tabindex="0" role="button"
-      aria-label="${m.name}のプロフィールを見る" onkeydown="if(event.key==='Enter')openModal(${idx})">
+    <article class="member-card" onclick="openModal(${idx})" tabindex="0" role="button" onkeydown="if(event.key==='Enter')openModal(${idx})">
       <div class="card-stripe"></div>
       <div class="card-top">
         <div class="avatar-wrap">${avatarHTML(m)}</div>
         <div class="card-info">
-          ${badgesHTML ? `<div class="badges">${badgesHTML}</div>` : ''}
+          ${m.badges?.length ? `<div class="badges">${makeBadges(m.badges)}</div>` : ''}
           <div class="card-name">${m.name}</div>
           <div class="card-role">${m.role || ''}</div>
         </div>
@@ -292,35 +439,31 @@ function filterCards(tag, btn) {
   renderCards(tag);
 }
 
+// ===== モーダル =====
 function openModal(idx) {
   const m = members[idx];
   document.getElementById('modalAvatar').innerHTML = avatarHTML(m);
   document.getElementById('modalName').textContent = m.name;
   document.getElementById('modalRoleLabel').textContent = [m.role, m.event].filter(Boolean).join(' | ');
-  const badgesHTML = makeBadges(m.badges);
   const socials = [
     m.instagram ? `<a href="${m.instagram}" target="_blank" rel="noopener">Instagram</a>` : '',
     m.twitter   ? `<a href="${m.twitter}"   target="_blank" rel="noopener">X (Twitter)</a>` : ''
   ].filter(Boolean).join('');
   document.getElementById('modalBody').innerHTML = `
-    ${badgesHTML ? `<div class="modal-section"><div class="modal-badges">${badgesHTML}</div></div>` : ''}
-    ${m.event ? `<div class="modal-section"><div class="modal-section-label">種目</div><div class="modal-event">${m.event}</div></div>` : ''}
-    ${m.bio ? `<div class="modal-section"><div class="modal-section-label">自己紹介</div><p>${m.bio}</p></div>` : ''}
-    ${m.career ? `<div class="modal-section"><div class="modal-section-label">経歴</div><p>${m.career.replace(/\\n/g,'<br>')}</p></div>` : ''}
-    ${socials ? `<div class="modal-section"><div class="modal-section-label">SNS</div><div class="modal-social">${socials}</div></div>` : ''}
+    ${m.badges?.length ? `<div class="modal-section"><div class="modal-badges">${makeBadges(m.badges)}</div></div>` : ''}
+    ${m.event   ? `<div class="modal-section"><div class="modal-section-label">種目</div><div class="modal-event">${m.event}</div></div>` : ''}
+    ${m.bio     ? `<div class="modal-section"><div class="modal-section-label">自己紹介</div><p>${m.bio}</p></div>` : ''}
+    ${m.career  ? `<div class="modal-section"><div class="modal-section-label">経歴</div><p>${m.career.replace(/\\n/g,'<br>')}</p></div>` : ''}
+    ${socials   ? `<div class="modal-section"><div class="modal-section-label">SNS</div><div class="modal-social">${socials}</div></div>` : ''}
   `;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
-document.getElementById('modalOverlay').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeModal();
-});
+document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 loadMembers();
