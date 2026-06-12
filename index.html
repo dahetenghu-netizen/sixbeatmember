@@ -159,6 +159,78 @@
   .img-zoom-close { position: absolute; top: 1.25rem; right: 1.25rem; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .avatar-wrap { cursor: zoom-in; }
 
+  /* ===== メンバー紹介 背景画像 ===== */
+  #page-members {
+    position: relative;
+  }
+  #page-members .grid-section {
+    background-image: url('https://drive.google.com/thumbnail?id=1IxlvwElznMy2PW0CbIAf4qF_8aBCHh-2&sz=w1200');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  #page-members .grid-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(250, 247, 244, 0.82);
+    pointer-events: none;
+    z-index: 0;
+  }
+  #page-members .grid-section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== ブログ 背景画像 ===== */
+  #page-blog {
+    position: relative;
+  }
+  #page-blog .blog-section {
+    background-image: url('https://drive.google.com/thumbnail?id=1APAYg4du4hoLKadzNmozgbVy1RbWi9Ku&sz=w1200');
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  #page-blog .blog-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(250, 247, 244, 0.82);
+    pointer-events: none;
+    z-index: 0;
+  }
+  #page-blog .blog-section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ===== 団体概要 背景画像 ===== */
+  #page-about {
+    position: relative;
+  }
+  .about-section {
+    background-image: url('https://drive.google.com/thumbnail?id=1kuauDn5bPjkX12HptEtMSfsvaPVaD9RB&sz=w1200');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+  }
+  .about-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(250, 247, 244, 0.80);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .about-section > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  #page-about::before { display: none; }
+
   @media (max-width: 600px) {
     .members-grid { grid-template-columns: 1fr; }
     .about-cards { grid-template-columns: 1fr 1fr; }
