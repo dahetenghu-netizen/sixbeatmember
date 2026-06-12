@@ -195,40 +195,8 @@
 
 <!-- ===== 団体概要ページ ===== -->
 <div class="page active" id="page-about">
-  <div class="about-section">
-    <div class="about-hero">
-      <div class="about-hero-inner">
-        <h2>SIX BEAT</h2>
-        <p>早稲田大学のフィンスイミングサークルです。フィンスイミングとはモノフィンやビーフィンを装着して泳ぐ競技で、水中を高速で移動する爽快感が魅力です。初心者から経験者まで、泳ぐことが好きな仲間を歓迎しています。</p>
-      </div>
-    </div>
-    <div class="about-cards">
-      <div class="about-card">
-        <div class="about-card-label">設立</div>
-        <div class="about-card-value">2003年</div>
-      </div>
-      <div class="about-card">
-        <div class="about-card-label">活動場所</div>
-        <div class="about-card-value">早稲田大学 記念会堂プール</div>
-      </div>
-      <div class="about-card">
-        <div class="about-card-label">活動日</div>
-        <div class="about-card-value">週3〜4回</div>
-        <div class="about-card-desc">平日夜・週末を中心に活動</div>
-      </div>
-      <div class="about-card">
-        <div class="about-card-label">競技種目</div>
-        <div class="about-card-value">サーフィス / ビーフィン / アプニア</div>
-      </div>
-    </div>
-    <div class="about-body">
-      <h3>活動内容</h3>
-      <p>定期練習では基礎技術から競技に向けたトレーニングまで幅広く行っています。国内の大会にも積極的に参加しており、日本代表選手も輩出しています。</p>
-      <h3>新歓・見学</h3>
-      <p>毎年4月に新歓活動を行っています。見学・体験は随時受け付けていますので、InstagramのDMまたは早稲田大学公認サークルの連絡先よりお気軽にご連絡ください。</p>
-      <h3>お問い合わせ</h3>
-      <p>Instagram: <a href="https://www.instagram.com/" target="_blank" rel="noopener" style="color:var(--maroon);font-weight:700;">@sixbeat_waseda</a></p>
-    </div>
+  <div class="about-section" id="aboutSection">
+    <div class="loading-state"><div class="loading-spinner"></div><div>読み込み中...</div></div>
   </div>
 </div>
 
@@ -271,6 +239,7 @@
 const SHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vR9iC-j6mdI_aGP2eFuRpSVVZ69ejxYyrrmflcOGFCDSwtd_dHYN3K2e9oJEyQ6PD7Lnger2Lwl119t/pub';
 const MEMBERS_CSV_URL = `${SHEET_BASE}?output=csv&cachebust=${Date.now()}`;
 const BLOG_CSV_URL    = `${SHEET_BASE}?output=csv&gid=754192531&cachebust=${Date.now()}`;
+const ABOUT_CSV_URL   = `${SHEET_BASE}?output=csv&gid=1877270459&cachebust=${Date.now()}`;
 
 // 日本語列名 → 内部キーのマッピング
 const MEMBER_COLUMNS = {
@@ -296,6 +265,7 @@ const badgeConfig = {
 let members = [];
 let currentFilter = 'all';
 let blogLoaded = false;
+let aboutLoaded = false;
 
 // ===== CSVパーサー =====
 function parseLine(line) {
@@ -374,6 +344,55 @@ async function loadBlog() {
   }
 }
 
+// ===== 団体概要読み込み =====
+async function loadAbout() {
+  if (aboutLoaded) return;
+  aboutLoaded = true;
+  const sec = document.getElementById('aboutSection');
+  try {
+    const res = await fetch(ABOUT_CSV_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    // A列=項目名, B列=内容 の形式で読む
+    const lines = text.replace(/\r/g, '').trim().split('\n').slice(1); // 1行目ヘッダーをスキップ
+    const data = {};
+    lines.forEach(line => {
+      const cols = parseLine(line);
+      if (cols[0]) data[cols[0].trim()] = (cols[1] || '').trim();
+    });
+
+    // カード項目（項目名がある行はカードに）
+    const cardKeys = ['設立年', '活動場所', '活動日', '種目'];
+    const bodyKeys = ['活動内容', '新歓情報', 'お問い合わせ'];
+
+    const cardsHTML = cardKeys.filter(k => data[k]).map(k => `
+      <div class="about-card">
+        <div class="about-card-label">${k}</div>
+        <div class="about-card-value">${data[k]}</div>
+      </div>`).join('');
+
+    const bodyHTML = bodyKeys.filter(k => data[k]).map(k => {
+      const val = k === 'お問い合わせ' && data[k].startsWith('http')
+        ? `<a href="${data[k]}" target="_blank" rel="noopener" style="color:var(--maroon);font-weight:700;">${data[k]}</a>`
+        : data[k].replace(/\\n/g, '<br>');
+      return `<h3>${k}</h3><p>${val}</p>`;
+    }).join('');
+
+    sec.innerHTML = `
+      <div class="about-hero">
+        <div class="about-hero-inner">
+          <h2>${data['チーム名'] || 'SIX BEAT'}</h2>
+          <p>${data['説明文'] || ''}</p>
+        </div>
+      </div>
+      ${cardsHTML ? `<div class="about-cards">${cardsHTML}</div>` : ''}
+      ${bodyHTML  ? `<div class="about-body">${bodyHTML}</div>` : ''}
+    `;
+  } catch (e) {
+    sec.innerHTML = `<div class="error-state"><strong>団体概要を読み込めませんでした</strong><p>${e.message}</p></div>`;
+  }
+}
+
 // ===== ナビゲーション =====
 function showPage(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -381,6 +400,7 @@ function showPage(id, btn) {
   document.getElementById('page-' + id).classList.add('active');
   btn.classList.add('active');
   if (id === 'blog') loadBlog();
+  if (id === 'about') loadAbout();
 }
 
 // ===== カード描画 =====
@@ -467,6 +487,7 @@ document.getElementById('modalOverlay').addEventListener('click', e => { if (e.t
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
 loadMembers();
+loadAbout();
 </script>
 </body>
 </html>
