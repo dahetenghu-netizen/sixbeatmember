@@ -154,7 +154,7 @@
   /* ===== アイコン拡大モーダル ===== */
   .img-zoom-overlay { display: none; position: fixed; inset: 0; background: rgba(10,0,5,0.85); z-index: 200; align-items: center; justify-content: center; cursor: zoom-out; }
   .img-zoom-overlay.open { display: flex; }
-  .img-zoom-overlay img { max-width: min(720px, 92vw); max-height: 92vh; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: zoomIn 0.2s ease; }
+  .img-zoom-overlay img { max-width: min(840px, 95vw); max-height: 95vh; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: zoomIn 0.2s ease; }
   @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
   .img-zoom-close { position: absolute; top: 1.25rem; right: 1.25rem; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
   .avatar-wrap { cursor: zoom-in; }
@@ -568,7 +568,9 @@ document.getElementById('modalOverlay').addEventListener('click', e => { if (e.t
 function openImgZoom(src, name) {
   const overlay = document.getElementById('imgZoomOverlay');
   const img = document.getElementById('imgZoomImg');
-  img.src = src;
+  // Google DriveのサムネイルURLは sz=w800 に上げて高解像度表示
+  const hqSrc = src.replace(/sz=w\d+/, 'sz=w800');
+  img.src = hqSrc;
   img.alt = name;
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
