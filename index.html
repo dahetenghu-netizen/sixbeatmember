@@ -179,11 +179,9 @@
 <div class="page" id="page-members">
   <div class="filter-bar">
     <button class="filter-btn active" onclick="filterCards('all', this)">すべて</button>
-    <button class="filter-btn" onclick="filterCards('coach', this)">コーチ</button>
+    <button class="filter-btn" onclick="filterCards('member', this)">メンバー</button>
+    <button class="filter-btn" onclick="filterCards('manager', this)">マネージャー</button>
     <button class="filter-btn" onclick="filterCards('rep', this)">日本代表</button>
-    <button class="filter-btn" onclick="filterCards('jr', this)">ジュニア</button>
-    <button class="filter-btn" onclick="filterCards('masters', this)">マスターズ</button>
-    <button class="filter-btn" onclick="filterCards('record', this)">記録保持者</button>
   </div>
   <main class="grid-section">
     <div class="section-label">Members — <span id="count">0</span> 名</div>
@@ -255,11 +253,9 @@ const BLOG_COLUMNS = {
 };
 
 const badgeConfig = {
-  rep:    { label: '日本代表',     cls: 'badge-rep' },
-  coach:  { label: 'コーチ',       cls: 'badge-coach' },
-  jr:     { label: 'ジュニア代表', cls: 'badge-jr' },
-  record: { label: '記録保持者',   cls: 'badge-record' },
-  masters:{ label: 'マスターズ',   cls: 'badge-masters' }
+  member:  { label: 'メンバー',   cls: 'badge-rep' },
+  manager: { label: 'マネージャー', cls: 'badge-coach' },
+  rep:     { label: '日本代表',   cls: 'badge-record' },
 };
 
 let members = [];
