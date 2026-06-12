@@ -151,6 +151,14 @@
   footer { background: var(--maroon-d); color: rgba(255,255,255,0.4); text-align: center; padding: 1.75rem 2rem; font-size: 0.75rem; letter-spacing: 0.05em; border-top: 3px solid var(--maroon); }
   footer strong { color: var(--gold); font-weight: 700; }
 
+  /* ===== アイコン拡大モーダル ===== */
+  .img-zoom-overlay { display: none; position: fixed; inset: 0; background: rgba(10,0,5,0.85); z-index: 200; align-items: center; justify-content: center; cursor: zoom-out; }
+  .img-zoom-overlay.open { display: flex; }
+  .img-zoom-overlay img { max-width: min(420px, 90vw); max-height: 90vh; border-radius: 50%; border: 4px solid var(--gold); object-fit: cover; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: zoomIn 0.2s ease; }
+  @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .img-zoom-close { position: absolute; top: 1.25rem; right: 1.25rem; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .avatar-wrap { cursor: zoom-in; }
+
   @media (max-width: 600px) {
     .members-grid { grid-template-columns: 1fr; }
     .about-cards { grid-template-columns: 1fr 1fr; }
@@ -275,6 +283,12 @@
       </a>
     </div>
   </div>
+</div>
+
+<!-- アイコン拡大モーダル -->
+<div class="img-zoom-overlay" id="imgZoomOverlay" onclick="closeImgZoom()">
+  <button class="img-zoom-close" onclick="closeImgZoom()">✕</button>
+  <img id="imgZoomImg" src="" alt="アイコン拡大">
 </div>
 
 <footer>
@@ -469,9 +483,12 @@ function showPage(id, btn) {
 
 // ===== カード描画 =====
 function initials(name) { return name.trim().split(/\s+/).map(p => p[0]).join('').slice(0,2).toUpperCase(); }
-function avatarHTML(m) {
+function avatarHTML(m, clickable = false) {
+  const clickAttr = (clickable && m.photo)
+    ? `onclick="event.stopPropagation();openImgZoom('${m.photo}','${m.name}')" title="クリックで拡大"`
+    : '';
   return m.photo
-    ? `<img src="${m.photo}" alt="${m.name}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=\\'avatar-initials\\'>${initials(m.name)}</div>'">`
+    ? `<img src="${m.photo}" alt="${m.name}" loading="lazy" ${clickAttr} onerror="this.parentNode.innerHTML='<div class=\\'avatar-initials\\'>${initials(m.name)}</div>'">`
     : `<div class="avatar-initials">${initials(m.name)}</div>`;
 }
 function makeBadges(badges) {
@@ -498,7 +515,7 @@ function renderCards(filter) {
     <article class="member-card" onclick="openModal(${idx})" tabindex="0" role="button" onkeydown="if(event.key==='Enter')openModal(${idx})">
       <div class="card-stripe"></div>
       <div class="card-top">
-        <div class="avatar-wrap">${avatarHTML(m)}</div>
+        <div class="avatar-wrap">${avatarHTML(m, true)}</div>
         <div class="card-info">
           ${m.badges?.length ? `<div class="badges">${makeBadges(m.badges)}</div>` : ''}
           <div class="card-name">${m.name}</div>
@@ -548,7 +565,19 @@ function closeModal() {
   document.body.style.overflow = '';
 }
 document.getElementById('modalOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+function openImgZoom(src, name) {
+  const overlay = document.getElementById('imgZoomOverlay');
+  const img = document.getElementById('imgZoomImg');
+  img.src = src;
+  img.alt = name;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeImgZoom() {
+  document.getElementById('imgZoomOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeImgZoom(); } });
 
 loadMembers();
 loadAbout();
