@@ -48,7 +48,7 @@
 
   /* ===== GLOBAL NAV ===== */
   .global-nav { background: var(--maroon); display: flex; justify-content: center; gap: 0; border-bottom: 1px solid var(--maroon-d); position: sticky; top: 0; z-index: 30; }
-  .nav-btn { background: transparent; border: none; color: rgba(255,255,255,0.65); padding: 0.8rem 1.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.04em; border-bottom: 3px solid transparent; transition: all 0.15s; }
+  .nav-btn { background: transparent; border: none; color: rgba(255,255,255,0.65); padding: 0.8rem 1.6rem; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: inherit; letter-spacing: 0.04em; border-bottom: 3px solid transparent; transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease; }
   .nav-btn:hover { color: var(--white); background: rgba(255,255,255,0.06); }
   .nav-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
 
@@ -138,6 +138,16 @@
   .about-body h3 { font-size: 1rem; font-weight: 800; color: var(--maroon); margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
   .about-body p { font-size: 0.88rem; color: var(--text-2); line-height: 1.8; margin-bottom: 1.5rem; }
   .about-body p:last-child { margin-bottom: 0; }
+
+  /* ===== フォトギャラリー ===== */
+  .photo-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-bottom: 2rem; }
+  .photo-gallery img {
+    width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 10px;
+    border: 1px solid var(--border); cursor: zoom-in;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .photo-gallery img:hover { transform: scale(1.03); box-shadow: 0 6px 18px rgba(75,0,24,0.15); }
+  @media (max-width: 600px) { .photo-gallery { grid-template-columns: repeat(2, 1fr); } }
 
   /* ===== ブログページ ===== */
   .blog-section { max-width: 800px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
@@ -241,6 +251,39 @@
 
   #page-about::before { display: none; }
 
+  /* ===== ページ切り替えアニメーション ===== */
+  .page { display: none; opacity: 0; }
+  .page.active {
+    display: block;
+    animation: pageFadeIn 0.45s ease forwards;
+  }
+  @keyframes pageFadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== メンバーカード 出現アニメーション ===== */
+  .member-card {
+    opacity: 0;
+    animation: cardRiseIn 0.45s ease forwards;
+  }
+  @keyframes cardRiseIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== モーダル ふわっと拡大 ===== */
+  .modal {
+    animation: modalPopIn 0.25s cubic-bezier(0.2, 0.8, 0.3, 1.1);
+  }
+  @keyframes modalPopIn {
+    from { opacity: 0; transform: scale(0.92) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  /* ===== ブログカード ホバー強化 ===== */
+  .blog-card { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+
   @media (max-width: 600px) {
     .members-grid { grid-template-columns: 1fr; }
     .about-cards { grid-template-columns: 1fr 1fr; }
@@ -304,6 +347,13 @@
         style="display:inline-flex;align-items:center;gap:6px;background:var(--gold);color:var(--maroon-d);text-decoration:none;font-weight:800;font-size:0.85rem;padding:0.65rem 1.4rem;border-radius:8px;white-space:nowrap;">
         ブログを見る →
       </a>
+    </div>
+
+    <!-- フォトギャラリー -->
+    <div class="photo-gallery">
+      <img src="https://drive.google.com/thumbnail?id=1IxlvwElznMy2PW0CbIAf4qF_8aBCHh-2&sz=w400" alt="活動写真1" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'活動写真')">
+      <img src="https://drive.google.com/thumbnail?id=1APAYg4du4hoLKadzNmozgbVy1RbWi9Ku&sz=w400" alt="活動写真2" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'活動写真')">
+      <img src="https://drive.google.com/thumbnail?id=1kuauDn5bPjkX12HptEtMSfsvaPVaD9RB&sz=w400" alt="活動写真3" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'活動写真')">
     </div>
 
     <!-- 最新記事一覧 -->
@@ -546,6 +596,11 @@ async function loadAbout() {
           <p>${data['説明文'] || ''}</p>
         </div>
       </div>
+      <div class="photo-gallery">
+        <img src="https://drive.google.com/thumbnail?id=1kuauDn5bPjkX12HptEtMSfsvaPVaD9RB&sz=w400" alt="チーム写真1" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'チーム写真')">
+        <img src="https://drive.google.com/thumbnail?id=1IxlvwElznMy2PW0CbIAf4qF_8aBCHh-2&sz=w400" alt="チーム写真2" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'チーム写真')">
+        <img src="https://drive.google.com/thumbnail?id=1APAYg4du4hoLKadzNmozgbVy1RbWi9Ku&sz=w400" alt="チーム写真3" loading="lazy" onclick="openImgZoom(this.src.replace('sz=w400','sz=w1200'),'チーム写真')">
+      </div>
       ${cardsHTML ? `<div class="about-cards">${cardsHTML}</div>` : ''}
       ${bodyHTML  ? `<div class="about-body">${bodyHTML}</div>` : ''}
     `;
@@ -587,14 +642,15 @@ function renderCards(filter) {
     document.getElementById('membersGrid').innerHTML = `<div class="error-state"><strong>該当メンバーなし</strong></div>`;
     return;
   }
-  document.getElementById('membersGrid').innerHTML = list.map(m => {
+  document.getElementById('membersGrid').innerHTML = list.map((m, i) => {
     const idx = members.indexOf(m);
     const socials = [
       m.instagram ? `<a class="social-link" href="${m.instagram}" target="_blank" rel="noopener" onclick="event.stopPropagation()">IG</a>` : '',
       m.twitter   ? `<a class="social-link" href="${m.twitter}"   target="_blank" rel="noopener" onclick="event.stopPropagation()">𝕏</a>` : ''
     ].join('');
+    const delay = Math.min(i * 0.05, 0.6);
     return `
-    <article class="member-card" onclick="openModal(${idx})" tabindex="0" role="button" onkeydown="if(event.key==='Enter')openModal(${idx})">
+    <article class="member-card" style="animation-delay:${delay}s" onclick="openModal(${idx})" tabindex="0" role="button" onkeydown="if(event.key==='Enter')openModal(${idx})">
       <div class="card-stripe"></div>
       <div class="card-top">
         <div class="avatar-wrap">${avatarHTML(m, true)}</div>
