@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dahetenghu-netizen.github.io/sixbeatmember/sitemap.xml
