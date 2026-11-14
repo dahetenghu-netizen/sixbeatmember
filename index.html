@@ -474,29 +474,52 @@ async function loadMembers() {
   }
 }
 
-// ===== ブログ読み込み =====
+// ===== ブログ読み込み（アメブロRSSで自動取得 → 失敗時はスプレッドシート） =====
+const AMEBA_RSS = 'https://rssblog.ameba.jp/6beat/rss20.xml';
+const BLOG_MAX = 9;
+function esc(t){ return String(t||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function renderPosts(posts){
+  document.getElementById('blogGrid').innerHTML = posts.map(p => `
+    <a class="blog-card" href="${esc(p.url)}" target="_blank" rel="noopener">
+      <div class="blog-card-accent"></div>
+      <div class="blog-card-body">
+        ${p.date ? `<div class="blog-card-date">${esc(p.date)}</div>` : ''}
+        <div class="blog-card-title">${esc(p.title)}</div>
+        ${p.desc ? `<div class="blog-card-desc">${esc(p.desc)}</div>` : ''}
+      </div>
+      <div class="blog-card-arrow">→</div>
+    </a>`).join('');
+}
+async function fetchRssPosts(){
+  const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(AMEBA_RSS), { cache: 'no-store' });
+  if (!res.ok) throw new Error('RSS HTTP ' + res.status);
+  const j = await res.json();
+  if (j.status !== 'ok' || !j.items || !j.items.length) throw new Error('RSS empty');
+  return j.items.slice(0, BLOG_MAX).map(i => {
+    const d = new Date((i.pubDate || '').replace(' ', 'T') + '+09:00');
+    const txt = (i.description || i.content || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+    return {
+      title: i.title, url: i.link,
+      date: isNaN(d) ? '' : `${d.getFullYear()}年${String(d.getMonth()+1).padStart(2,'0')}月${String(d.getDate()).padStart(2,'0')}日`,
+      desc: txt.length > 60 ? txt.slice(0, 60) + '…' : txt
+    };
+  });
+}
+async function fetchSheetPosts(){
+  const res = await fetch(BLOG_CSV_URL, { cache: 'no-store' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const posts = parseCSV(await res.text(), BLOG_COLUMNS).filter(p => p.title && p.url);
+  if (!posts.length) throw new Error('記事がありません');
+  return posts;
+}
 async function loadBlog() {
   if (blogLoaded) return;
   blogLoaded = true;
-  try {
-    const res = await fetch(BLOG_CSV_URL, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const text = await res.text();
-    const posts = parseCSV(text, BLOG_COLUMNS).filter(p => p.title && p.url);
-    if (posts.length === 0) throw new Error('記事がありません');
-    document.getElementById('blogGrid').innerHTML = posts.map(p => `
-      <a class="blog-card" href="${p.url}" target="_blank" rel="noopener">
-        <div class="blog-card-accent"></div>
-        <div class="blog-card-body">
-          ${p.date ? `<div class="blog-card-date">${p.date}</div>` : ''}
-          <div class="blog-card-title">${p.title}</div>
-          ${p.desc ? `<div class="blog-card-desc">${p.desc}</div>` : ''}
-        </div>
-        <div class="blog-card-arrow">→</div>
-      </a>`).join('');
-  } catch (e) {
+  try { renderPosts(await fetchRssPosts()); return; } catch (e) { console.warn('RSS失敗、シートに切替', e); }
+  try { renderPosts(await fetchSheetPosts()); }
+  catch (e) {
     document.getElementById('blogGrid').innerHTML =
-      `<div class="error-state"><strong>ブログ記事を読み込めませんでした</strong><p>スプレッドシートにブログシートを追加し、GIDを設定してください。</p></div>`;
+      `<div class="error-state"><strong>ブログ記事を読み込めませんでした</strong><p>下の「ブログを見る」からアメブロをご覧ください。</p></div>`;
   }
 }
 
